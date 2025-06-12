@@ -1,0 +1,124 @@
+---
+title: "Titanic Survival Analysis"
+author: "Jirawan Phromtawepong"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    theme: cosmo
+---
+
+# 🛳 Introduction
+
+This project explores survival patterns in the Titanic dataset using R. The analysis focuses on how **gender**, **passenger class**, and **family presence** influenced the likelihood of survival.
+
+The goal is to demonstrate end-to-end data analysis skills: from data cleaning and transformation to visualization and insight generation. This project is part of my data portfolio to showcase my analytical thinking and ability to communicate findings.
+
+---
+
+# 📦 Dataset Overview
+
+```{r load-libraries, message=FALSE, warning=FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r load-data}
+titanic <- read_csv("titanic.csv")
+```
+
+```{r initial-explore}
+glimpse(titanic)
+summary(titanic)
+```
+
+---
+
+# 🧹 Data Cleaning & Preparation
+
+```{r cleaning}
+titanic_clean <- titanic %>%
+  filter(!is.na(Age)) %>%
+  mutate(
+    FamilySize = SibSp + Parch,
+    TravelAlone = ifelse(FamilySize == 0, "Alone", "WithFamily"),
+    Survived = factor(Survived, levels = c(0,1), labels = c("Died", "Survived")),
+    Pclass = factor(Pclass),
+    Sex = factor(Sex)
+  )
+```
+
+---
+
+# 📊 Analysis & Visualization
+
+## 1. Survival Rate by Gender
+
+```{r gender-plot}
+ggplot(titanic_clean, aes(x = Sex, fill = Survived)) +
+  geom_bar(position = "fill") +
+  labs(title = "Survival Rate by Gender", y = "Proportion")
+```
+
+**Insight:**
+
+Female passengers had a **significantly higher survival rate** compared to male passengers. Over 70% of females survived, versus less than 20% of males. This aligns with the evacuation protocol of prioritizing "women and children first."
+
+---
+
+## 2. Survival Rate by Passenger Class
+
+```{r class-plot}
+ggplot(titanic_clean, aes(x = Pclass, fill = Survived)) +
+  geom_bar(position = "fill") +
+  labs(title = "Survival Rate by Passenger Class", y = "Proportion")
+```
+
+**Insight:**
+
+Passengers in **1st class** had the highest survival rate, followed by 2nd class, while **3rd class** passengers had the lowest. This highlights a likely influence of **socioeconomic status** and cabin accessibility during evacuation.
+
+---
+
+## 3. Survival Rate: Traveling Alone vs With Family
+
+```{r family-plot}
+ggplot(titanic_clean, aes(x = TravelAlone, fill = Survived)) +
+  geom_bar(position = "fill") +
+  labs(title = "Survival Rate: Alone vs With Family", y = "Proportion")
+```
+
+**Insight:**
+
+Passengers traveling **with family** had a significantly higher survival rate than those traveling alone. This may reflect both practical support and social prioritization for groups during evacuation.
+
+---
+
+# 🛠 Tools Used
+
+- **Language**: R
+- **Libraries**: `readr`, `dplyr`, `ggplot2`
+- **Skills Demonstrated**:
+  - Data cleaning
+  - Feature engineering
+  - Exploratory data analysis
+  - Data visualization
+  - Insight communication
+
+---
+
+
+```text
+titanic-survival-analysis/
+├── data/
+│   └── titanic.csv
+├── R/
+│   └── titanic_analysis.Rmd
+├── outputs/
+│   └── titanic_analysis.html  # (after knitting)
+├── README.md
+└── LICENSE
+```
