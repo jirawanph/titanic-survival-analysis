@@ -1,3 +1,6 @@
+🌐 **Live Report**: [Click here to view the HTML version](https://jirawanph.github.io/titanic-survival-analysis/)
+
+
 # 🛳 Titanic Survival Analysis
 
 This project explores survival patterns in the Titanic dataset using R. The analysis focuses on how **gender**, **passenger class**, and **family presence** influenced the likelihood of survival.
